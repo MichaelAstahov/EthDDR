@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="49" Path="C:/Users/Michael/Desktop/homeProjects/EthDDR/fpga/vivado/EthDDR.xpr">
+<Project Version="7" Minor="49" Path="D:/Projects/EthDDR/fpga/vivado/EthDDR.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="4aaab3569e0c4190a416eef1726aa69a"/>
