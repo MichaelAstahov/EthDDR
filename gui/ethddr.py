@@ -116,22 +116,25 @@ def send_reset():
     packet.append(0xff)
     serial_object.write(packet)
     write(">> Reset command sent to FPGA")
-    # time.sleep(2)
-    # print("send function: " + filter_data)
-    # if (filter_data == 'fpga uart reset'):
-    #     print("DONE")
-    # else:
-    #     print("NOT GOOD")
-
 
 def send_ledson():
-    send_data = "fpga uart ledson"
-    serial_object.write(send_data.encode())
+    global filter_data
+    packet = bytearray()
+    packet.append(0xaa)
+    packet.append(0x01)
+    packet.append(0x10)
+    packet.append(0xff)
+    serial_object.write(packet)
     write(">> LedsOn command sent to FPGA")
 
 def send_ledsoff():
-    send_data = "fpga uart ledsoff"
-    serial_object.write(send_data.encode())
+    global filter_data
+    packet = bytearray()
+    packet.append(0xaa)
+    packet.append(0x01)
+    packet.append(0x20)
+    packet.append(0xff)
+    serial_object.write(packet)
     write(">> LedsOff command sent to FPGA")
 
 
