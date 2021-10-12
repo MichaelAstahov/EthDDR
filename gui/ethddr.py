@@ -99,20 +99,14 @@ def get_data():
                 print(filter_data) 
 
 
-# This functions is for sending data from the computer to the host controller.
-# The data can be of any format, since the data is always converted into ASCII, 
-# the receiving device has to convert the data into the required format.
-    # --- Used till now ---
-    # send_data = "fpga uart reset"
-    # send_data = send_data.decode("hex")
-    # serial_object.write(send_data.encode())
-    # ----------------------
+# These functions is for sending data from the computer to the fpga.
 def send_reset():
     global filter_data
     packet = bytearray()
     packet.append(0xaa)
     packet.append(0x01)
     packet.append(0x00)
+    packet.append(0x01)
     packet.append(0xff)
     serial_object.write(packet)
     write(">> Reset command sent to FPGA")
@@ -123,6 +117,7 @@ def send_ledson():
     packet.append(0xaa)
     packet.append(0x01)
     packet.append(0x10)
+    packet.append(0x11)
     packet.append(0xff)
     serial_object.write(packet)
     write(">> LedsOn command sent to FPGA")
@@ -133,6 +128,7 @@ def send_ledsoff():
     packet.append(0xaa)
     packet.append(0x01)
     packet.append(0x20)
+    packet.append(0x21)
     packet.append(0xff)
     serial_object.write(packet)
     write(">> LedsOff command sent to FPGA")
