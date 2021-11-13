@@ -15,6 +15,7 @@ filter_data = []
 update_period = 5
 rxdata = False
 serial_object = None
+tx_command = ''
 
 # The gui widget has to be created before any other widgets 
 # and there can only be one gui widget
@@ -80,59 +81,97 @@ def get_data():
     global serial_data
     global filter_data
     global rxdata
+    global tx_command
     i = 0
 
     while(rxdata):  
         serial_data = serial_object.read()
         if len(serial_data) > 0: 
-            if (serial_data.hex()) != hex(0XFF):
-                try:
-                    filter_data[i] = serial_data.hex()
-                    i += 1
-                    print(filter_data[i]) 
-                    print(filter_data) 
-                    time.sleep(2)
-                except:
-                    pass
-            else:
+            if serial_data == b'\xaa' and i == 0:
+                filter_data.clear()
+                filter_data.append(serial_data.hex())
+                i = i+1
+            elif serial_data == b'\x10' and i == 1:
+                filter_data.append(serial_data.hex())
+                i = i+1
+            elif i == 2:
+                match serial_data:
+                    case b'\x01':
+                        if (tx_command == "reset"):
+                            filter_data.append(serial_data.hex())
+                            i = i+1
+                            write(">> Reset cmnd ( V )")
+                        else:
+                            write(">> Reset cmnd ( X )")
+                            i = i+1
+                    case b'\x11':
+                        if (tx_command == "ledson"):
+                            filter_data.append(serial_data.hex())
+                            i = i+1
+                            write(">> Leds On cmnd ( V )")
+                        else:
+                            write(">> Leds On cmnd ( X )")
+                            i = i+1
+                    case b'\x21':
+                        if (tx_command == "ledsoff"):
+                            filter_data.append(serial_data.hex())
+                            i = i+1
+                            write(">> Leds Off cmnd ( V )")
+                        else:
+                            write("Leds Off cmnd ( X )")
+                            i = i+1
+                    case _:
+                        write(">> ( X ) ")
+                        i = i+1
+            elif i == 3:
+                filter_data.append(serial_data.hex())
+                i = i+1
+            elif serial_data == b'\xff' and i == 4:
+                filter_data.append(serial_data.hex())
                 i = 0
-                print(filter_data) 
+                print(*filter_data, sep=', ')
+            else:
+                write(">> ( X )")
+                i = 0
+                print(*filter_data, sep=', ')
 
 
-# This functions is for sending data from the computer to the host controller.
-# The data can be of any format, since the data is always converted into ASCII, 
-# the receiving device has to convert the data into the required format.
-    # --- Used till now ---
-    # send_data = "fpga uart reset"
-    # send_data = send_data.decode("hex")
-    # serial_object.write(send_data.encode())
-    # ----------------------
+# These functions is for sending data from the computer to the fpga.
 def send_reset():
-    global filter_data
+    global tx_command
     packet = bytearray()
     packet.append(0xaa)
     packet.append(0x01)
     packet.append(0x00)
+    packet.append(0x01)
     packet.append(0xff)
     serial_object.write(packet)
-    write(">> Reset command sent to FPGA")
-    # time.sleep(2)
-    # print("send function: " + filter_data)
-    # if (filter_data == 'fpga uart reset'):
-    #     print("DONE")
-    # else:
-    #     print("NOT GOOD")
-
+    write(">> Reset cmnd --> FPGA")
+    tx_command = "reset"
 
 def send_ledson():
-    send_data = "fpga uart ledson"
-    serial_object.write(send_data.encode())
-    write(">> LedsOn command sent to FPGA")
+    global tx_command
+    packet = bytearray()
+    packet.append(0xaa)
+    packet.append(0x01)
+    packet.append(0x10)
+    packet.append(0x11)
+    packet.append(0xff)
+    serial_object.write(packet)
+    write(">> LedsOn cmnd --> FPGA")
+    tx_command = "ledson"
 
 def send_ledsoff():
-    send_data = "fpga uart ledsoff"
-    serial_object.write(send_data.encode())
-    write(">> LedsOff command sent to FPGA")
+    global tx_command
+    packet = bytearray()
+    packet.append(0xaa)
+    packet.append(0x01)
+    packet.append(0x20)
+    packet.append(0x21)
+    packet.append(0xff)
+    serial_object.write(packet)
+    write(">> LedsOff cmnd --> FPGA")
+    tx_command = "ledsoff"
 
 
 def disconnect():
