@@ -1,3 +1,5 @@
+`timescale 1 ps / 1 ps
+
 module reset(
 	input  wire	clk,
 	input  wire	hardware_rst,
