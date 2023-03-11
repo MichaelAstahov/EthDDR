@@ -1,3 +1,5 @@
+`timescale 1 ps / 1 ps
+
 module leds_counter #(
     parameter N = 28'd40_000_000
 )
@@ -29,10 +31,10 @@ always @(posedge clk) begin
 end
 
 // ila_0 led_ila (
-// 	.clk    (clk),              // input wire clk
-// 	.probe0 (rst),              // input wire [0:0]  probe0  
-// 	.probe1 (blink_led_reg),    // input wire [0:0]  probe1 
-// 	.probe2 (leds_cnt)          // input wire [27:0]  probe2
+//  .clk    (clk),              // input wire clk
+//  .probe0 (rst),              // input wire [0:0]  probe0  
+//  .probe1 (blink_led_reg),    // input wire [0:0]  probe1 
+//  .probe2 (leds_cnt)          // input wire [27:0]  probe2
 // );
 
 assign out = blink_led_reg;

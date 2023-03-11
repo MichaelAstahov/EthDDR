@@ -4,6 +4,8 @@
 // - SWs/BTNs -> Sync with Clocks -> Internal Sync SWs/BTNs
 // ---------------------------------------------------------------------------
 
+`timescale 1 ps / 1 ps
+
 module input_buffers (
     input wire         clk_in,
     input wire [3:0]   btn_in,
@@ -203,9 +205,9 @@ assign sw_out       = sw_sync100;
 assign uart_rx_out  = uart_rx_sync100;
 
 // ila_1 ila_1_top (
-// 	.clk    (pll_clko_100),      // input wire clk
-// 	.probe0 (uart_rx_ibuf),      // input wire [0:0]  probe0  
-// 	.probe1 (uart_rx_sync100)       // input wire [0:0]  probe1
+//  .clk    (pll_clko_100),      // input wire clk
+//  .probe0 (uart_rx_ibuf),      // input wire [0:0]  probe0  
+//  .probe1 (uart_rx_sync100)       // input wire [0:0]  probe1
 // );
 
 endmodule

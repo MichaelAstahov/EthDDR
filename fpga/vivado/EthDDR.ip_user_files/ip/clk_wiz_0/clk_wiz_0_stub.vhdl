@@ -1,10 +1,10 @@
--- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2020.2 (win64) Build 3064766 Wed Nov 18 09:12:45 MST 2020
--- Date        : Fri Oct  8 20:26:11 2021
--- Host        : DESKTOP-221HEHL running 64-bit major release  (build 9200)
+-- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+-- Date        : Tue Feb 14 21:51:22 2023
+-- Host        : DESKTOP-4H2G2F2 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
---               c:/Projects/EthDDR/fpga/vivado/EthDDR.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_stub.vhdl
+--               c:/projects/EthDDR/fpga/vivado/EthDDR.gen/sources_1/ip/clk_wiz_0/clk_wiz_0_stub.vhdl
 -- Design      : clk_wiz_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a35ticsg324-1L
