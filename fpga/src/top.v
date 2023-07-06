@@ -4,7 +4,6 @@ module top
 (
     // Clock
     input  wire       clk_pin,    // 100MHz Clock
-
     // GPIO
     input  wire [3:0] sw_pin,     // Toggle Switches
     input  wire [3:0] btn_pin,    // Push Buttons 
@@ -24,7 +23,18 @@ module top
     output wire       led5_pin,
     output wire       led6_pin,
     output wire       led7_pin,   
-
+    // Ethernet: 100BASE-T MII
+    output wire       phy_ref_clk,
+    input  wire       phy_rx_clk,
+    input  wire [3:0] phy_rxd,
+    input  wire       phy_rx_dv,
+    input  wire       phy_rx_er,
+    input  wire       phy_tx_clk,
+    output wire [3:0] phy_txd,
+    output wire       phy_tx_en,
+    input  wire       phy_col,
+    input  wire       phy_crs,
+    output wire       phy_reset_n,
     // UART: 500000 bps, 8N1
     input  wire       uart_rx_pin,
     output wire       uart_tx_pin
@@ -64,7 +74,7 @@ input_buffers input_buffers_inst (
     .uart_rx_out (uart_rx_int)
 );
 
-//! UART Controller
+// UART Controller
 uart_ctrl uart_ctrl_inst (
     .clk                (clk_100mhz_int),
     .rst                (internal_rst100),
@@ -75,6 +85,24 @@ uart_ctrl uart_ctrl_inst (
     .software_ledson    (software_ledson)
 );
 
+// Ethernet MII
+eth_mii_wrapper eth_wrapper_inst (
+    // System
+    .clk         (clk_int),
+    .rst         (rst_int),
+    // Ethernet: 100BASE-T MII
+    .phy_rx_clk  (phy_rx_clk),
+    .phy_rxd     (phy_rxd),
+    .phy_rx_dv   (phy_rx_dv),
+    .phy_rx_er   (phy_rx_er),
+    .phy_tx_clk  (phy_tx_clk),
+    .phy_txd     (phy_txd),
+    .phy_tx_en   (phy_tx_en),
+    .phy_col     (phy_col),
+    .phy_crs     (phy_crs),
+    .phy_reset_n (phy_reset_n)
+);
+
 reset reset_inst (
     .clk            (clk_100mhz_int),
     .hardware_rst   (hardware_rst100),
@@ -82,7 +110,7 @@ reset reset_inst (
     .internal_rst   (internal_rst100)
 );
 
-//! Leds
+// Leds
 leds leds_inst (
     .clk                (clk_100mhz_int),
     .rst                (internal_rst100),
